@@ -7,9 +7,11 @@ import configuration from "./config/configuration";
 import { existsSync, mkdirSync } from 'fs'
 import { LogStream } from 'logfilestream'
 import pretty from 'pino-pretty'
+import { CallbackModule } from "./callback/callback.module";
 
 @Module({
   imports: [
+    CallbackModule,
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
