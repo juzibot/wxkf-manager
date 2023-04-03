@@ -1,7 +1,7 @@
 import { Logger } from 'nestjs-pino'
-import { ConfigService } from "@nestjs/config";
-import { NestFactory } from "@nestjs/core";
-import { WxkfManagerModule } from "./wxkfMannager.module";
+import { ConfigService } from '@nestjs/config'
+import { NestFactory } from '@nestjs/core'
+import { WxkfManagerModule } from './wxkfMannager.module'
 
 async function bootstrap() {
   const app = await NestFactory.create(WxkfManagerModule)

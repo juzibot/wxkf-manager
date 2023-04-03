@@ -1,5 +1,5 @@
-import { Module } from "@nestjs/common";
-import { CallbackController } from "./callback.controller";
+import { Module } from '@nestjs/common'
+import { CallbackController } from './callback.controller'
 
 @Module({
   controllers: [

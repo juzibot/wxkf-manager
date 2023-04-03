@@ -1,13 +1,14 @@
-import { Module } from "@nestjs/common";
-import { ConfigModule, ConfigService } from "@nestjs/config";
-import { EventEmitterModule } from "@nestjs/event-emitter";
-import { LoggerModule } from "nestjs-pino";
-import { multistream } from "pino";
-import configuration from "./config/configuration";
+import { Module } from '@nestjs/common'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { EventEmitterModule } from '@nestjs/event-emitter'
+import { LoggerModule } from 'nestjs-pino'
+import { multistream } from 'pino'
+import configuration from './config/configuration'
 import { existsSync, mkdirSync } from 'fs'
 import { LogStream } from 'logfilestream'
 import pretty from 'pino-pretty'
-import { CallbackModule } from "./callback/callback.module";
+import { CallbackModule } from './callback/callback.module'
+import { MongooseModule } from '@nestjs/mongoose'
 
 @Module({
   imports: [
@@ -66,6 +67,16 @@ import { CallbackModule } from "./callback/callback.module";
         }
       },
     }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        const mongoUri = config.get('mongoUri')
+        return {
+          uri: mongoUri,
+        }
+      }
+    })
   ]
 })
 export class WxkfManagerModule {}
