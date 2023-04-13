@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nest start",
     "build": "nest build",
-    "start:dev": "NODE_ENV=development nest start --watch"
+    "start:dev": "NODE_ENV=development nest start --watch",
+    "docker-ci": "./scripts/build_docker_ci.sh"
   },
   "keywords": [],
   "author": "",

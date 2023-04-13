@@ -1,0 +1,59 @@
+name: Build Release Image
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repositories
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: cn-northwest-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.14.2
+          registry-url: https://npm.pkg.github.com/
+          scope: '@juzibot'
+
+      - name: Setup @juzibot npm auth
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.JUZI_NPM_TOKEN }}" > ~/.npmrc
+      - name: NPM install
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.JUZI_NPM_TOKEN }}
+        run: |
+          npm i
+          sudo chown -R $USER ./node_modules
+
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@main
+
+      - name: Build
+        run: npm run build
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: my-ecr-repo
+          IMAGE_TAG: ${{ steps.package-version.outputs.current-version }}
+        run: |
+          npm run docker-ci
+
+    outputs:
+      version: ${{ github.sha }}
