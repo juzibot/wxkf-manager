@@ -29,22 +29,9 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           scope: '@juzibot'
 
-      - name: Setup @juzibot npm auth
-        run: |
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.JUZI_NPM_TOKEN }}" > ~/.npmrc
-      - name: NPM install
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.JUZI_NPM_TOKEN }}
-        run: |
-          npm i
-          sudo chown -R $USER ./node_modules
-
       - name: get-npm-version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@main
-
-      - name: Build
-        run: npm run build
 
       - name: Build, tag, and push image to Amazon ECR
         id: build-image

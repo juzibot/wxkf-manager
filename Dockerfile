@@ -2,8 +2,8 @@ FROM node:18.14.2-alpine3.17
 
 WORKDIR /app
 
-COPY ./package.json ./package.json
-COPY ./node_modules ./node_modules
-COPY ./dist ./dist
+COPY . .
+RUN npm install
+RUN npm run build
 
 CMD node ./dist/main.js
