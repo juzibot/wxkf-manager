@@ -9,10 +9,12 @@ import { LogStream } from 'logfilestream'
 import pretty from 'pino-pretty'
 import { CallbackModule } from './callback/callback.module'
 import { MongooseModule } from '@nestjs/mongoose'
+import { ManagerModule } from './manager/manager.module'
 
 @Module({
   imports: [
     CallbackModule,
+    ManagerModule,
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
