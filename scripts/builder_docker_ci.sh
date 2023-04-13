@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-imageName='puppet-ecompro'
+imageName='wxkf-manager'
 ECR_URL=789252305933.dkr.ecr.cn-northwest-1.amazonaws.com.cn
 PACKAGE_VERSION=$IMAGE_TAG
 
