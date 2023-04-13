@@ -12,6 +12,7 @@ export class CallbackController {
   async onVerifyCallback(@Param('corpId') corpId: string, @Query() query: CallbackVerifyData, @Res() res: Response) {
     this.logger.log(`onVerifyCallback(${corpId}, ${JSON.stringify(query)})`)
 
+    void crypto
     // TODO: to be implemented
     // const { msg_signature, timestamp, nonce, echostr } = query
     // const token = 'QimIrBpv'
