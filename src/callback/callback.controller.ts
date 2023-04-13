@@ -13,6 +13,7 @@ export class CallbackController {
     this.logger.log(`onVerifyCallback(${corpId}, ${JSON.stringify(query)})`)
 
     void crypto
+    void res
     // TODO: to be implemented
     // const { msg_signature, timestamp, nonce, echostr } = query
     // const token = 'QimIrBpv'
