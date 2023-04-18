@@ -10,11 +10,13 @@ import pretty from 'pino-pretty'
 import { CallbackModule } from './callback/callback.module'
 import { MongooseModule } from '@nestjs/mongoose'
 import { ManagerModule } from './manager/manager.module'
+import { StateModule } from './state/state.module'
 
 @Module({
   imports: [
     CallbackModule,
     ManagerModule,
+    StateModule,
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,

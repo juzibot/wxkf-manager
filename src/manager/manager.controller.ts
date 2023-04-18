@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Inject, Logger, Post, Query } from '@nestjs/common'
-import { DeregisterBotRequest, DeregisterBotResponse, GetAccessTokenRequest, GetAccessTokenResponse, RegisterBotRequest, RegisterBotResponse } from './manager.interface'
+import { DeregisterWxkfPuppetRequest, DeregisterWxkfPuppetResponse, GetAccessTokenRequest, GetAccessTokenResponse, RegisterWxkfPuppetRequest, RegisterWxkfPuppetResponse } from './manager.interface'
 import { ManagerService } from './manager.service'
 
 @Controller('/botManager')
@@ -11,11 +11,11 @@ export class ManagerController {
   private readonly logger = new Logger(ManagerController.name)
 
   @Post('/register')
-  async handleBotRegister(@Body() body: RegisterBotRequest): Promise<RegisterBotResponse> {
+  async handleWxkfPuppetRegister(@Body() body: RegisterWxkfPuppetRequest): Promise<RegisterWxkfPuppetResponse> {
     this.logger.log(`handleBotRegister(${JSON.stringify(body)})`)
 
     try {
-      await this.managerService.registerBot(body)
+      await this.managerService.registerWxkfPuppet(body)
     } catch (e) {
       return {
         code: 503,
@@ -31,11 +31,11 @@ export class ManagerController {
   }
 
   @Post('/deregister')
-  async handleBotDeregister(@Body() body: DeregisterBotRequest): Promise<DeregisterBotResponse> {
+  async handleWxkfPuppetDeregister(@Body() body: DeregisterWxkfPuppetRequest): Promise<DeregisterWxkfPuppetResponse> {
     this.logger.log(`handleBotDeregister(${JSON.stringify(body)})`)
 
     try {
-      await this.managerService.deregisterBot(body)
+      await this.managerService.deregisterWxkfPuppet(body)
     } catch (e) {
       return {
         code: 503,

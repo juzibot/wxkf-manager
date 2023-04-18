@@ -1,34 +1,39 @@
 import { Inject, Injectable, Logger } from '@nestjs/common'
-import { DeregisterBotRequest, GetAccessTokenRequest, GetAccessTokenResponse, RegisterBotRequest } from './manager.interface'
+import { DeregisterWxkfPuppetRequest, GetAccessTokenRequest, GetAccessTokenResponse, RegisterWxkfPuppetRequest } from './manager.interface'
 import axios from 'axios'
 import { ConfigService } from '@nestjs/config'
+import { StateService } from 'src/state/state.service'
 
 @Injectable()
 export class ManagerService {
+
+  @Inject()
+  private readonly stateService: StateService
 
   @Inject()
   private readonly configService: ConfigService
 
   private readonly logger = new Logger(ManagerService.name)
 
-  async registerBot(botInfo: RegisterBotRequest) {
-    await new Promise<void>(resolve => {
-      setTimeout(() => {
-        this.logger.log(botInfo)
-        console.log(botInfo)
-        resolve()
-      }, 1000)
+  async registerWxkfPuppet(wxkfPuppetInfo: RegisterWxkfPuppetRequest) {
+    await this.stateService.registerWxkfPuppet({
+      botEndpoint: wxkfPuppetInfo.endpoint,
+      kfOpenId: wxkfPuppetInfo.kfId,
+      name: wxkfPuppetInfo.kfName,
+      corpId: wxkfPuppetInfo.corpId,
+      corpSecret: wxkfPuppetInfo.corpSecret,
+      token: wxkfPuppetInfo.token,
+      encodingAESKey: wxkfPuppetInfo.encodingAESKey,
     })
+    this.logger.log(`wxkf ${wxkfPuppetInfo.kfId} registered successfully, endpoint: ${wxkfPuppetInfo.endpoint}`)
   }
 
-  async deregisterBot(botInfo: DeregisterBotRequest) {
-    await new Promise<void>(resolve => {
-      setTimeout(() => {
-        this.logger.log(botInfo)
-        console.log(botInfo)
-        resolve()
-      }, 1000)
+  async deregisterWxkfPuppet(wxkfPuppetInfo: DeregisterWxkfPuppetRequest) {
+    await this.stateService.deregisterWxkfPuppet({
+      kfOpenId: wxkfPuppetInfo.kfId,
+      corpId: wxkfPuppetInfo.corpId,
     })
+    this.logger.log(`wxkf ${wxkfPuppetInfo.kfId} deregistered successfully`)
   }
 
   async getToken(request: GetAccessTokenRequest): Promise<GetAccessTokenResponse> {

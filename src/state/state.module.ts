@@ -1,10 +1,17 @@
 import { Module } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
-import { WxkfBot, WxkfBotSchema } from './schema/wxkf-bot.schema'
+import { WxkfPuppet, WxkfPuppetSchema } from './schema/wxkf-puppet.schema'
+import { StateService } from './state.service'
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: WxkfBot.name, schema: WxkfBotSchema }])
+    MongooseModule.forFeature([{ name: WxkfPuppet.name, schema: WxkfPuppetSchema }])
+  ],
+  providers: [
+    StateService,
+  ],
+  exports: [
+    StateService,
   ]
 })
 export class StateModule{

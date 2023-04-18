@@ -1,9 +1,10 @@
 
-export interface RegisterBotRequest {
+export interface RegisterWxkfPuppetRequest {
   kfId: string,
   kfName: string,
   endpoint: string,
   corpId: string,
+  corpSecret: string,
   token: string,
   encodingAESKey: string,
 }
@@ -13,15 +14,14 @@ export interface ManagerCenterResponseBase {
   message: string,
 }
 
-export interface RegisterBotResponse extends ManagerCenterResponseBase {}
+export interface RegisterWxkfPuppetResponse extends ManagerCenterResponseBase {}
 
-export interface DeregisterBotRequest {
+export interface DeregisterWxkfPuppetRequest {
   kfId: string,
-  kfName: string,
   corpId: string,
 }
 
-export interface DeregisterBotResponse extends ManagerCenterResponseBase {}
+export interface DeregisterWxkfPuppetResponse extends ManagerCenterResponseBase {}
 
 // 为了和企微api一致，命名方法会有些不同
 
