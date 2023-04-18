@@ -1,8 +1,8 @@
-import { Body, Controller, Get, Inject, Logger, Post, Query } from '@nestjs/common'
+import { Body, Controller, Get, Inject, Logger, Param, Post, Query } from '@nestjs/common'
 import { DeregisterWxkfPuppetRequest, DeregisterWxkfPuppetResponse, GetAccessTokenRequest, GetAccessTokenResponse, RegisterWxkfPuppetRequest, RegisterWxkfPuppetResponse } from './manager.interface'
 import { ManagerService } from './manager.service'
 
-@Controller('/botManager')
+@Controller('/puppetWxkfManager')
 export class ManagerController {
   
   @Inject()
@@ -26,8 +26,6 @@ export class ManagerController {
       code: 0,
       message: 'success',
     }
-
-    // TODO: to be implemented
   }
 
   @Post('/deregister')
@@ -46,8 +44,6 @@ export class ManagerController {
       code: 0,
       message: 'success',
     }
-
-    // TODO: to be implemented
   }
 
   @Get('/getToken')
@@ -62,5 +58,12 @@ export class ManagerController {
         errmsg: (e as Error).message,
       }
     }
+  }
+
+  @Get('/puppetWxkfInfo/:kfId')
+  async handlePuppetWxkfInfo(@Param('kfId') kfId: string) {
+    const puppetWxkfInfo = await this.managerService.getPuppetWxkfInfoByKfId(kfId)
+    
+    return puppetWxkfInfo
   }
 }

@@ -15,5 +15,4 @@ import { StateService } from './state.service'
   ]
 })
 export class StateModule{
-
 }

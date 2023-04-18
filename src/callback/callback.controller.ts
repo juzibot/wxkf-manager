@@ -1,36 +1,30 @@
-import { Controller, Get, Logger, Param, Query, Res } from '@nestjs/common'
-import { CallbackVerifyData } from './shcema/verify.interface'
-import * as crypto from '@wecom/crypto'
-import { Response } from 'express'
+import { Body, Controller, Get, Inject, Logger, Param, Post, Query } from '@nestjs/common'
+import { CallbackVerifyData, MessageQueryData } from './shcema/verify.interface'
+import { CallbackService } from './callback.service'
 
 @Controller('/callback')
 export class CallbackController {
   
+  @Inject()
+  private readonly callbackService: CallbackService
+
   private readonly logger = new Logger(CallbackController.name)
 
   @Get('/:corpId')
-  async onVerifyCallback(@Param('corpId') corpId: string, @Query() query: CallbackVerifyData, @Res() res: Response) {
+  async onVerifyCallback(@Param('corpId') corpId: string, @Query() query: CallbackVerifyData) {
     this.logger.log(`onVerifyCallback(${corpId}, ${JSON.stringify(query)})`)
 
-    void crypto
-    void res
-    // TODO: to be implemented
-    // const { msg_signature, timestamp, nonce, echostr } = query
-    // const token = 'QimIrBpv'
-    // const encodingAESKey = 'jrr6JdErP4IQ5ktDzk2AUJdUx9ijc13jb5QfSMKQOrD'
-    // // TODO: get token and aeskey from db
+    const result = await this.callbackService.handleVerifyCallback(corpId, query)
 
-    // const signature = crypto.getSignature(token, timestamp, nonce, echostr)
+    return result
+  }
 
-    // if (signature !== msg_signature) {
-    //   this.logger.warn('message signature not match, will dismiss')
-    //   res.status(500)
-    //   res.send('signature not match')
-    //   return
-    // }
-    
-    // const { message } = crypto.decrypt(encodingAESKey, echostr)
-    // res.send(message)
+  @Post('/:corpId')
+  async onMessageCallback(@Param('corpId') corpId: string, @Query() query: MessageQueryData, @Body() body: string) {
+    this.logger.log(`onMessageCallback(${corpId}, ${JSON.stringify(query)}, ${body})`)
+
+    await this.callbackService.handleMessageCallback(corpId, query, body)
+
     return
   }
 }

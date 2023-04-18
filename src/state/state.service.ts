@@ -20,7 +20,10 @@ export class StateService {
         online: true,
       })
     }
-    const createdWxkfPuppet = new this.wxkfPuppetModel(wxkfPuppetDto)
+    const createdWxkfPuppet = new this.wxkfPuppetModel({
+      ...wxkfPuppetDto,
+      online: true,
+    })
     return createdWxkfPuppet.save()
   }
 
@@ -37,10 +40,18 @@ export class StateService {
     })
   }
 
-  async findPuppetByKfid(kfId: string, corpId?: string) {
+  async findPuppetByKfId(kfId: string) {
     return this.wxkfPuppetModel.find({
       kfOpenId: kfId,
-      corpId,
     })
+  }
+
+  async findPuppetByCorpId(corpId: string) {
+    return this.wxkfPuppetModel.find({
+      corpId,
+      online: true,
+    }).sort({
+      lastOnlineDate: -1
+    }).limit(1)
   }
 }

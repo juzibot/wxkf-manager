@@ -2,7 +2,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common'
 import { DeregisterWxkfPuppetRequest, GetAccessTokenRequest, GetAccessTokenResponse, RegisterWxkfPuppetRequest } from './manager.interface'
 import axios from 'axios'
 import { ConfigService } from '@nestjs/config'
-import { StateService } from 'src/state/state.service'
+import { StateService } from '../state/state.service'
 
 @Injectable()
 export class ManagerService {
@@ -42,20 +42,12 @@ export class ManagerService {
     try {
       const response = await axios.get(accessTokenUrl, {
         params: {
-          corp_id: request.corpid, // cope with our internal service...
           corpsecret: request.corpsecret,
           corpid: request.corpid,
         }
       })
 
-      return {
-        errcode: 0,
-        errmsg: '',
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        access_token: response.data.accessToken,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        expires_in: Math.floor((response.data.expiresAt - Date.now()) / 1000),
-      }
+      return response.data
     } catch (e) {
       this.logger.error(`get access token failed for ${(e as Error).message}`)
       return {
@@ -63,5 +55,9 @@ export class ManagerService {
         errmsg: (e as Error).message,
       }
     }
+  }
+
+  async getPuppetWxkfInfoByKfId(kfId: string) {
+    return this.stateService.findPuppetByKfId(kfId)
   }
 }
