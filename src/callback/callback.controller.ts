@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Inject, Logger, Param, Post, Query } from '@nestjs/common'
-import { CallbackVerifyData, MessageQueryData } from './shcema/verify.interface'
+import { CallbackVerifyData, DecryptedMessageEventData, MessageQueryData } from './shcema/verify.interface'
 import { CallbackService } from './callback.service'
 
 @Controller('/callback')
@@ -26,5 +26,14 @@ export class CallbackController {
     await this.callbackService.handleMessageCallback(corpId, query, body)
 
     return
+  }
+
+  @Post('/decrypted/:corpId')
+  async onDecryptedMessageCallback(@Param('corpId') corpId: string, @Body() body: DecryptedMessageEventData) {
+    this.logger.log(`onMessageCallback(${corpId}, ${JSON.stringify(body)}`)
+
+    await this.callbackService.handleDecryptedMessageCallback(corpId, body)
+
+    return 'success'
   }
 }

@@ -1,7 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common'
 import { StateService } from '../state/state.service'
 import * as crypto from '@wecom/crypto'
-import { BodyXmlData, CallbackVerifyData, EventXmlData, MessageQueryData } from './shcema/verify.interface'
+import { BodyXmlData, CallbackVerifyData, DecryptedMessageEventData, EventXmlData, MessageQueryData } from './shcema/verify.interface'
 import xml2js from 'xml2js'
 import axios from 'axios'
 
@@ -43,7 +43,6 @@ export class CallbackService {
       return
     }
 
-    const endpoint = corpPuppetInfo[0].botEndpoint
     const token = corpPuppetInfo[0].token
     const encodingAESKey = corpPuppetInfo[0].encodingAESKey
 
@@ -65,11 +64,13 @@ export class CallbackService {
 
     const openKfId = messageObject.xml.OpenKfId[0]
     const targetPuppet = await this.stateService.findPuppetByKfId(openKfId)
-
+    
     if (!targetPuppet) {
       this.logger.warn(`cannot find online puppet for kfId ${openKfId}`)
       return
     }
+
+    const endpoint = targetPuppet.botEndpoint
 
     const eventType = messageObject.xml.Event[0]
     if (eventType !== 'kf_msg_or_event') {
@@ -84,5 +85,18 @@ export class CallbackService {
       },
       params: data,
     })
+  }
+
+  async handleDecryptedMessageCallback(corpId: string, data: DecryptedMessageEventData) {
+    void corpId
+    const targetPuppet = await this.stateService.findPuppetByKfId(data.openKfId)
+
+    if (!targetPuppet) {
+      this.logger.warn(`cannot find online puppet for kfId ${data.openKfId}`)
+      return
+    }
+    const endpoint = targetPuppet.botEndpoint
+
+    await axios.post(`${endpoint}/callback/decrypted`, data)
   }
 }

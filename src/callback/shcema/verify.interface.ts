@@ -30,3 +30,7 @@ export interface EventXmlData {
   }
 }
 
+export interface DecryptedMessageEventData {
+  token: string,
+  openKfId: string,
+}

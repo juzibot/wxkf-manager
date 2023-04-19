@@ -41,7 +41,7 @@ export class StateService {
   }
 
   async findPuppetByKfId(kfId: string) {
-    return this.wxkfPuppetModel.find({
+    return this.wxkfPuppetModel.findOne({
       kfOpenId: kfId,
     })
   }
