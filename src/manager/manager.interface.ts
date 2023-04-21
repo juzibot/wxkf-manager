@@ -28,7 +28,6 @@ export interface DeregisterWxkfPuppetResponse extends ManagerCenterResponseBase 
 export interface GetAccessTokenRequest {
   corpid: string,
   corpsecret: string,
-
 }
 
 export interface GetAccessTokenResponse {

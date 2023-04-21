@@ -4,6 +4,8 @@ import axios from 'axios'
 import { ConfigService } from '@nestjs/config'
 import { StateService } from '../state/state.service'
 
+const WxkfBaseUrl = 'https://qyapi.weixin.qq.com/cgi-bin/'
+
 @Injectable()
 export class ManagerService {
 
@@ -59,5 +61,22 @@ export class ManagerService {
 
   async getPuppetWxkfInfoByKfId(kfId: string) {
     return this.stateService.findPuppetByKfId(kfId)
+  }
+
+  async handleWxkfRequestProxy(method: string, path: string, query: any, data: any) {
+    const url = `${WxkfBaseUrl}${path}`
+
+    if (method === 'POST') {
+      return await axios.post(url, data, {
+        params: query,
+      })
+    }
+    if (method === 'GET') {
+      return await axios.get(url, {
+        params: query
+      })
+    }
+
+    throw new Error('should not get here')
   }
 }
