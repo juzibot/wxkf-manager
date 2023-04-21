@@ -29,11 +29,11 @@ export class CallbackController {
   }
 
   @Post('/decrypted/:corpId')
-  async onDecryptedMessageCallback(@Param('corpId') corpId: string, @Body() body: DecryptedMessageEventData) {
+  onDecryptedMessageCallback(@Param('corpId') corpId: string, @Body() body: DecryptedMessageEventData) {
     this.logger.log(`onMessageCallback(${corpId}, ${JSON.stringify(body)}`)
 
-    await this.callbackService.handleDecryptedMessageCallback(corpId, body)
+    void this.callbackService.handleDecryptedMessageCallback(corpId, body)
 
-    return 'success'
+    return 'roger'
   }
 }
