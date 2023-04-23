@@ -7,7 +7,7 @@ Either In-house development app and Authorize custom app can take many responsib
 
 To use WXKF-Manager, you need to set up two more envs in your WXKF bot implementation, PUPPET_WXKF_MANAGER_CENTER_ENDPOINT and PUPPET_WXKF_SELF_ENDPOINT.
 
-```ts
+```bash
 export PUPPET_WXKF_MANAGER_ENDPOINT=http://127.0.0.1:7777
 export PUPPET_WXKF_SELF_ENDPOINT=http://127.0.0.1:8080
 ```
@@ -52,7 +52,7 @@ The above approach will work, but that is not the best practice. The problem is:
 
 ![image](./introduction-assets/eng/structure-with-gateway.jpg)
 
-In this structure, instead of receiving the callback directly from Wecom, a gateway service should be implemented to handle all services. The callback address will of wecom should be `http://www.example.com/callback/{corpId}`. It's db should have the encodingAesKey and token of that corp. So it can decrypt the message and handle it correctly.
+In this structure, instead of receiving the callback directly from Wecom, a gateway service should be implemented to handle all services. The callback address of wecom should be `http://www.example.com/callback/{corpId}`. It's db should have the encodingAesKey and token of that corp. So it can decrypt the message and handle it correctly.
 
 When the gateway service receive a `kf_msg_or_event` callback, it can call the WXKF-Manager service and it then dispatch the message to the corresponding puppet.
 
