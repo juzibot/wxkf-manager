@@ -50,7 +50,7 @@ Note: When decrypting callback messages from wecom server, we need to use encodi
 
 The above approach will work, but that is not the best practice. The problem is: the access token of the app is key to all Wecom APis, and Wecom claims that there is a limit on calling this API. So there better be a service to renew and cache this token.
 
-![image](./introduction-assets/eng/structure-with-manager.jpg)
+![image](./introduction-assets/eng/structure-with-gateway.jpg)
 
 In this structure, instead of receiving the callback directly from Wecom, a gateway service should be implemented to handle all services. The callback address will of wecom should be `http://www.example.com/callback/{corpId}`. It's db should have the encodingAesKey and token of that corp. So it can decrypt the message and handle it correctly.
 
